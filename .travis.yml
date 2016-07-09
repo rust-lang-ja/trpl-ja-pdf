@@ -1,0 +1,51 @@
+language: rust
+os:
+- osx
+cache:
+  directories:
+    - "$HOME/Library/texlive/2016basic/texmf-var/luatex-cache"
+    - "$HOME/.cargo"
+    - "$HOME/rust"
+before_install:
+  - brew update
+install:
+  - curl -L -O http://mirrors.concertpass.com/tex-archive/systems/mac/mactex/BasicTeX.pkg
+  - sudo installer -pkg BasicTeX.pkg -target /
+  - rm BasicTeX.pkg
+  - export PATH=$PATH:/usr/texbin
+  - sudo tlmgr update --self --all
+  - sudo tlmgr install collection-luatex collection-langjapanese collection-fontsrecommended filehook type1cm mdframed needspace hyphenat quotchap framed
+  - brew install pandoc
+  - curl -L -O http://downloads.sourceforge.net/project/dejavu/dejavu/2.35/dejavu-fonts-ttf-2.35.zip
+  - unzip dejavu-fonts-ttf-2.35.zip
+  - cp dejavu-fonts-ttf-2.35/ttf/*.ttf /Library/Fonts/
+before_script:
+  - sudo fmtutil-sys --byfmt lualatex
+  - cp trpl_meta.yml trpl-ebook/
+  - cp options.rs trpl-ebook/src/convert_book/
+  - rm -rf trpl-ebook/trpl
+  - cp -r the-rust-programming-language-ja/1.9/ja/book trpl-ebook/trpl
+script:
+  - cd trpl-ebook
+  - cargo run --release
+  - cp dist/*a4.pdf ../a4.pdf
+  - cp dist/*letter.pdf ../letter.pdf
+  - cd ..
+after_success:
+  - echo -e "Host github.com\n\tStrictHostKeyChecking no\nIdentityFile ~/.ssh/deploy.key\n" >> ~/.ssh/config
+  - openssl aes-256-cbc -k "$SERVER_KEY" -in deploy_key.enc -d -a -out deploy.key
+  - cp deploy.key ~/.ssh/
+  - chmod 600 ~/.ssh/deploy.key
+  - git config --global user.email "m@yyu.pw"
+  - git config --global user.name "Yoshimura Yuu"
+  - git fetch origin gh-pages:gh-pages
+  - git stash -u
+  - git checkout gh-pages
+  - rm a4.pdf letter.pdf
+  - git stash pop
+  - git add a4.pdf letter.pdf
+  - git commit -a -m "auto commit on travis $TRAVIS_JOB_NUMBER $TRAVIS_COMMIT"
+  - git push git@github.com:y-yu/trpl-ja-pdf.git gh-pages:gh-pages
+env:
+  global:
+    secure: EEOT4jdLZHJI/btWHn70uKyhXXyGTWEraYdTQ0tESmntno+XQLfzVxiE/e0qbBhz1+BcvsaWHxTX9KiPQItrPuy1t6UoUSxWqMX6aBFzw4u8jo86hl45Im8poT8nmKOpNLDzsmO1b9dlcAk7tRMA+kHi0Ktl6vzhT+q4pv6xAX7wwQRN1DZ5G5HxyEImi1fpvIh65e8ELVzrYKMogDkbR9WuqmnlsPEX/XkKNLnztr25g0JuV70nbPRAtVX/Bmg9+0XXFNCT119Vgx/2yWeR9SR+9oK8gP9FIJqd0mYk6aLZpySPYuOE+TYqyGku0VkoW71yWeZn++F2KbwwevaClgydY4TwHGJTKQm98PArkr39IlFqIpt4BtnamaQFJI0n/9Iuit2+T5nIohf/AOEZXPVmjt69LRy2IG9UDCcoU74Q+P4hwvkJh4k1ozLpyz8BwNs3jT2nydwZnjDGvUULgF+91rCIs/u4znwP/ZbrXt1jO2I687Dj5lMvd72Dik1Iy7nb63zK2U2c0piTNEz0xwmJGIr4xAws5CmX6l7xpxef9mv/bE/QqDnT/AehhGVFhDft/3QcvBdcmv9nDK0zejPQrJWgRGMb41CP6ifl/4e89DTorJLyYh4uRiIftS3l6aQ1gIifZyuFWR1/jIDsFHWqCKkHseYn9S1PO5kFh68=

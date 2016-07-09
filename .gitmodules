@@ -1,0 +1,6 @@
+[submodule "the-rust-programming-language-ja"]
+	path = the-rust-programming-language-ja
+	url = https://github.com/rust-lang-ja/the-rust-programming-language-ja.git
+[submodule "trpl-ebook"]
+	path = trpl-ebook
+	url = https://github.com/killercup/trpl-ebook.git
