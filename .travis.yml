@@ -1,6 +1,6 @@
 language: rust
 os:
-- osx
+  - osx
 cache:
   directories:
     - "$HOME/Library/texlive/2016basic/texmf-var/luatex-cache"
@@ -45,7 +45,7 @@ after_success:
   - git stash pop
   - git add a4.pdf letter.pdf
   - git commit -a -m "auto commit on travis $TRAVIS_JOB_NUMBER $TRAVIS_COMMIT"
-  - git push git@github.com:y-yu/trpl-ja-pdf.git gh-pages:gh-pages
+  - git push git@github.com:rust-lang-ja/trpl-ja-pdf.git gh-pages:gh-pages
 env:
   global:
-    secure: EEOT4jdLZHJI/btWHn70uKyhXXyGTWEraYdTQ0tESmntno+XQLfzVxiE/e0qbBhz1+BcvsaWHxTX9KiPQItrPuy1t6UoUSxWqMX6aBFzw4u8jo86hl45Im8poT8nmKOpNLDzsmO1b9dlcAk7tRMA+kHi0Ktl6vzhT+q4pv6xAX7wwQRN1DZ5G5HxyEImi1fpvIh65e8ELVzrYKMogDkbR9WuqmnlsPEX/XkKNLnztr25g0JuV70nbPRAtVX/Bmg9+0XXFNCT119Vgx/2yWeR9SR+9oK8gP9FIJqd0mYk6aLZpySPYuOE+TYqyGku0VkoW71yWeZn++F2KbwwevaClgydY4TwHGJTKQm98PArkr39IlFqIpt4BtnamaQFJI0n/9Iuit2+T5nIohf/AOEZXPVmjt69LRy2IG9UDCcoU74Q+P4hwvkJh4k1ozLpyz8BwNs3jT2nydwZnjDGvUULgF+91rCIs/u4znwP/ZbrXt1jO2I687Dj5lMvd72Dik1Iy7nb63zK2U2c0piTNEz0xwmJGIr4xAws5CmX6l7xpxef9mv/bE/QqDnT/AehhGVFhDft/3QcvBdcmv9nDK0zejPQrJWgRGMb41CP6ifl/4e89DTorJLyYh4uRiIftS3l6aQ1gIifZyuFWR1/jIDsFHWqCKkHseYn9S1PO5kFh68=
+    secure: ck1uVFgjw0jFayZgV9enDV3n4/D5PiyW3J/ahpHHhTaO9H4tGl6vKzlsbbo9zCPRmYpHyjH/mnEDcfWXViRE72o4wYxA4zbK+JNzJK5mFUuSZB4WrD44HC9jIL99u3mLU+9DnlK6gbE3oz6JRI04Ie9L48+LeCAX6HS4iAuj8ddRIgkVUEKoZPhJ7AbFNcBtU91uQqRmpLWXeLKgkwC9jSmD//zC0DkdTHGoCD2aUCARiwBbWLn17oV8nI37eUEgV/ZaPDmwoV1JSR9KFiokWTH4QiRwwKXnw5n2nHJPmBCmEs5LmQlsuu8puZmlXg6m8xUTIheW0vTbxejZeoNP71M+7MXGP0Ix6Z1rDrx767GORjUpwhSgVwmrz7VCSgZYwze9v2j0NWsDaDXD4kruxF4j7c7YdhzPA/+K6I+NdwVE3zGyRzG6KUySbVXGAFIMzIt/yofTN1PeSy779nrnMiNI9N8AyikYmiT1ocT91j7HzMYTab250yugm6Tl80+wwlpbk0ljYR7m0ZBIopAS8HzzeSrD9Qww6PAQ9EBPvnIlhG62ttUAjRFHe7zrDSzWaD2WvdM+jmeEGCdc1iqQLteWgvsLbXOJd5GJksOgRX/rRa++ioq2/+P/aGEyFeNXWMD3ru2V3eDDL2kBpnLv93JmsdRorGsFDOFsau2i0TI=
