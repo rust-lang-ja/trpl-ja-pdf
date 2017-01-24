@@ -1,5 +1,3 @@
-
-
 pub const MARKDOWN: &'static str = "markdown+grid_tables+pipe_tables-simple_tables+raw_html+implicit_figures+footnotes+intraword_underscores+auto_identifiers-inline_code_attributes";
 
 pub const HTML: &'static str = "--smart --normalize --standalone --self-contained --highlight-style=tango --table-of-contents --section-divs --template=lib/template.html --css=lib/pandoc.css --to=html5";
