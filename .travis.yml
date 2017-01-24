@@ -22,7 +22,7 @@ install:
 before_script:
   - sudo fmtutil-sys --byfmt lualatex
   - cp trpl_meta.yml trpl-ebook/
-  - echo "pub const RELEASE_DATE: &'static str = \"`date +%F`\";" | cat - options.rs.template > options.rs
+  - "echo \"pub const RELEASE_DATE: &'static str = \\\"`date +%F`\\\";\" | cat - options.rs.template > options.rs"
   - cp options.rs trpl-ebook/src/convert_book/
   - rm -rf trpl-ebook/trpl
   - cp -r the-rust-programming-language-ja/1.9/ja/book trpl-ebook/trpl
