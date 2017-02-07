@@ -1,26 +1,29 @@
 language: rust
-os:
-  - osx
+dist: trusty
+sudo: false
 cache:
   directories:
-    - "$HOME/Library/texlive/2016basic/texmf-var/luatex-cache"
+    - "$HOME/texlive/2016/texmf-var/luatex-cache"
     - "$HOME/.cargo"
     - "$HOME/rust"
+addons:
+  apt:
+    packages:
+      - pandoc
 before_install:
-  - brew update
   - wget https://raw.githubusercontent.com/y-yu/install-tex-travis/master/install-tex.sh
   - wget https://raw.githubusercontent.com/y-yu/install-tex-travis/master/tlmgr.sh
   - chmod +x install-tex.sh tlmgr.sh
+  - curl -L -O http://downloads.sourceforge.net/project/dejavu/dejavu/2.35/dejavu-fonts-ttf-2.35.zip
+  - unzip dejavu-fonts-ttf-2.35.zip
+  - mkdir "$HOME/.fonts"
+  - cp dejavu-fonts-ttf-2.35/ttf/*.ttf "$HOME/.fonts/"
+  - fc-cache -f -v
 install:
   - . ./install-tex.sh
   - ./tlmgr.sh update --self --all || echo "ignore errors"
   - ./tlmgr.sh install collection-luatex collection-langjapanese collection-fontsrecommended filehook type1cm mdframed needspace hyphenat quotchap framed
-  - brew install pandoc
-  - curl -L -O http://downloads.sourceforge.net/project/dejavu/dejavu/2.35/dejavu-fonts-ttf-2.35.zip
-  - unzip dejavu-fonts-ttf-2.35.zip
-  - cp dejavu-fonts-ttf-2.35/ttf/*.ttf /Library/Fonts/
 before_script:
-  - sudo fmtutil-sys --byfmt lualatex
   - cp trpl_meta.yml trpl-ebook/
   - "echo \"pub const RELEASE_DATE: &'static str = \\\"`date +%F`\\\";\" | cat - options.rs.template > options.rs"
   - cp options.rs trpl-ebook/src/convert_book/
