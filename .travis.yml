@@ -22,7 +22,7 @@ before_install:
 install:
   - . ./install-tex.sh
   - ./tlmgr.sh update --self --all || echo "ignore errors"
-  - ./tlmgr.sh install collection-luatex collection-langjapanese collection-fontsrecommended filehook type1cm mdframed needspace hyphenat quotchap framed
+  - ./tlmgr.sh install collection-luatex collection-langjapanese collection-fontsrecommended type1cm mdframed needspace hyphenat quotchap framed everyhook svn-prov
 before_script:
   - cp trpl_meta.yml trpl-ebook/
   - "echo \"pub const RELEASE_DATE: &'static str = \\\"`date +%F`\\\";\" | cat - options.rs.template > options.rs"
