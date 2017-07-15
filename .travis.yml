@@ -24,6 +24,7 @@ install:
   - ./tlmgr.sh update --self --all || echo "ignore errors"
   - ./tlmgr.sh install collection-luatex collection-langjapanese collection-fontsrecommended type1cm mdframed needspace hyphenat quotchap framed everyhook svn-prov
 before_script:
+  - (cd the-rust-programming-language-ja && git fetch origin && git checkout master && git pull origin master)
   - cp trpl_meta.yml trpl-ebook/
   - "echo \"pub const RELEASE_DATE: &'static str = \\\"`date +%F`\\\";\" | cat - options.rs.template > options.rs"
   - cp options.rs trpl-ebook/src/convert_book/
@@ -42,14 +43,9 @@ after_success:
   - chmod 600 ~/.ssh/deploy.key
   - git config --global user.email "m@yyu.pw"
   - git config --global user.name "Yoshimura Yuu"
-  - git fetch origin gh-pages:gh-pages
-  - git stash -u
-  - git checkout gh-pages
-  - rm a4.pdf letter.pdf
-  - git stash pop
-  - git add a4.pdf letter.pdf
-  - git commit -a -m "auto commit on travis $TRAVIS_JOB_NUMBER $TRAVIS_COMMIT"
-  - git push git@github.com:tatsuya6502/trpl-ja-pdf.git gh-pages:gh-pages
+  - ./ci-scripts/commit-trpl-submodule-revision.sh
+  - ./ci-scripts/publish-pdf.sh
 env:
   global:
+    # This is for tatsuya6502/trpl-ja-pdf repo.
     secure: e2ePFDSK4MWsMQUidQKS7sbbNYqwJTE1Piie3qQlcPupyMv6T1dNpoB1V4P6aRfekJL+5uQrSFel3ZM2Huiskf8FCI5WLomek97tgfUNVkUAb1HxNAhtwziQU8sTbGMGc52hHlICLiuWYpEeWplFjYAur+Z/20BTbyoP7ajCJqUwc+ZjcxzshGOv+fGSClYu8MhJg4l3yfQpnaOon+2XPk41AI1WdhTOK6IT3L1l7tKo2Vk/k6sYQdfyBNdWWl1rpeddNpwwLVUFr2muzbs2Q0X2r2PCQigj/uXsk80VcDCMOwYdWZRafuZfa7KwHWQGJXsiHxA7Pq3zTZMQRGUzljJjugytl4g55EF0+K2xUScpyYfNVYL4SrKdbQDgw6PGtNYGxNP+DwaLBWTNigin9bCqSkYg3I2L/tqsLH166SRzsq6y/QHvwno8Q8TaTz3uDWR/22d2why3nvFf+neHn+GVG1Cjw6/2L04e+mpgeBgxDz5vjXh2JYvMV1/8squgn33GiDOA00MZFkk8nSUxGzhEqOjAY2tVquW5ReeddL9zq2NCNNTHIjtVM51eHAEuJ/VpSUb4e/vqkDIYGouKHHRfvYlwnONSOksHZ4PqZ6kNGL/Dqo2gKh0931/VldbjQ+F8TgZS6YvzwyLWE/TqZ6LDTnXYHzorO9MGzw4YhK4=
