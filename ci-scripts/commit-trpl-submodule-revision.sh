@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This script commits trpl submodule's revision if it has been chaned, and
+# This script commits trpl submodule's revision if it has been changed, and
 # pushes the commit to the remote repository.
 #
 # Requires: `bash` -- because `local` and `pipefail` are used.
