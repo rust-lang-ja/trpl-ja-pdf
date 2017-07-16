@@ -22,6 +22,10 @@ function current_travis_branch() {
     return ${ret_code}
 }
 
+function get_remote_ssh_repo_url() {
+    echo $(git remote get-url origin | sed -e 's#https://github.com/#git@github.com:#')
+}
+
 function exit_if_not_ci() {
     local opt_u_state
     [ -o nounset ] && opt_u_state='set -u' || opt_u_state='set +u'
