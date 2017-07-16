@@ -17,7 +17,7 @@ function push_pdf_files_to_gh_pages() {
     git stash pop
     git add a4.pdf letter.pdf
     git commit -a -m "auto commit on travis $TRAVIS_JOB_NUMBER $TRAVIS_COMMIT [ci skip]"
-    echo "Pushing the PDF files to gh-pages branch."
+    echo "Pushing the PDF files to gh-pages branch of ${remote_url}."
     git push $(get_remote_ssh_repo_url) gh-pages:gh-pages
 }
 

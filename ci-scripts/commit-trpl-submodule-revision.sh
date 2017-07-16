@@ -19,6 +19,7 @@ function commit_and_push_trpl_submodule_revision() {
     local revision
     revision=$(cd ${TRPL_DIR}; git rev-parse --short HEAD)
 
+    git checkout ${current_branch}
     git add ${TRPL_DIR}
     set +e
     ret=$(git status | grep -q 'Changes to be committed:'; echo $?)
@@ -34,7 +35,10 @@ Update ${TRPL_DIR} submodule to ${revision}.
 EOF
 )
         git commit -m "${commit_message}"
-        git push $(get_remote_ssh_repo_url) ${current_branch}:${current_branch}
+        local remote_url
+        remote_url=$(get_remote_ssh_repo_url)
+        echo "Pushing to ${current_branch} branch of ${remote_url}."
+        git push ${remote_url} ${current_branch}:${current_branch}
     else
         echo "There is no change in trpl submodule. (revision: ${revision})"
     fi
