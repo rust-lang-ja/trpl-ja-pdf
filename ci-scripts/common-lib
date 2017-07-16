@@ -1,0 +1,34 @@
+function current_travis_branch() {
+    local opt_state=$(set +o)
+    set +u
+
+    local branch
+    if [ "x_{$EVENT_TYPE}" = "x_pull_request" ]; then
+        branch=${TRAVIS_PULL_REQUEST_BRANCH}
+    else
+        branch=${TRAVIS_BRANCH}
+    fi
+
+    if [ "x_${branch}" = "x_" ]; then
+        echo "ERROR: TRAVIS_*BRANCH variable(s) seem undefined. Could not get the branch info." 1>&2
+        ret_code=1
+    else
+        echo ${branch}
+        ret_code=0
+    fi
+
+    eval ${opt_state}
+    return ${ret_code}
+}
+
+function exit_if_not_ci() {
+    local opt_state=$(set +o)
+    set +u
+
+    if [ -z "${TRAVIS+x}" -o "x_${TRAVIS}" != "x_true" ]; then
+        echo "ERROR: Exiting because this script was not triggered by Travis CI." 1>&2
+        exit 1
+    fi
+
+    eval ${opt_state}
+}

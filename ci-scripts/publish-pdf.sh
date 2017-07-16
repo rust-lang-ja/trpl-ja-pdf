@@ -2,27 +2,14 @@
 
 # This script checks if this build was performed on the `master` branch,
 # and if so, it pushes the PDF files to `origin/gh-pages` branch.
+#
+# Requires: `bash` -- because `local` and `pipefail` are used.
 
-set -e
+set -u -e -o pipefail
 
-function current_branch() {
-    local branch
-    if [ "x_{$EVENT_TYPE}" = "x_pull_request" ]; then
-        branch=${TRAVIS_PULL_REQUEST_BRANCH}
-    else
-        branch=${TRAVIS_BRANCH}
-    fi
+source ./ci-scripts/common-lib
 
-    if [ "x_${branch}" = "x_" ]; then
-        echo "TRAVIS_*BRANCH variable(s) seem undefined. Could not determin the branch." 1>&2
-        return 1
-    else
-        echo ${branch}
-        return 0
-    fi
-}
-
-function push_files_to_gh_pages() {
+function push_pdf_files_to_gh_pages() {
     git fetch origin gh-pages:gh-pages
     git stash -u
     git checkout gh-pages
@@ -34,13 +21,15 @@ function push_files_to_gh_pages() {
     git push origin gh-pages:gh-pages
 }
 
-if [ "x_${TRAVIS}" != "x_true" ]; then
-    echo "Not pushing the PDF files to gh-pages because this script was not triggered by Travis CI." 1>&2
+exit_if_not_ci
+
+if [ -z "${TRAVIS+x}"  -o "x_${TRAVIS}" != "x_true" ]; then
+    echo "ERROR: Not pushing the PDF files to gh-pages because this script was not triggered by Travis CI." 1>&2
     exit 1
 else
-    CURRENT_BRANCH=$(current_branch)
+    CURRENT_BRANCH=$(current_travis_branch)
     if [ "x_${CURRENT_BRANCH}" = "x_master" ]; then
-        push_files_to_gh_pages
+        push_pdf_files_to_gh_pages
     else
         echo "Not pushing the PDF files to gh-pages because the current branch ${CURRENT_BRANCH} is not master branch."
     fi
