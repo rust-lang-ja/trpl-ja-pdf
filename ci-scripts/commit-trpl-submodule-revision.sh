@@ -28,12 +28,12 @@ function commit_and_push_trpl_submodule_revision() {
         echo "Committing trpl submodule's new revision ${revision}."
         local commit_message;
         commit_message=$(cat <<EOF
-'auto commit on travis ${TRAVIS_JOB_NUMBER} [ci skip]
+auto commit on travis ${TRAVIS_JOB_NUMBER} [ci skip]
 
-Update ${TRPL_DIR} submodule to ${REVISION}.'
+Update ${TRPL_DIR} submodule to ${revision}.
 EOF
 )
-        git commit -m ${commit_message}
+        git commit -m "${commit_message}"
         git push origin ${current_branch}:${current_branch}
     else
         echo "There is no change in trpl submodule. (revision: ${revision})"

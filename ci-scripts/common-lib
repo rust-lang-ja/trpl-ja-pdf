@@ -1,5 +1,6 @@
 function current_travis_branch() {
-    local opt_state=$(set +o)
+    local opt_u_state
+    [ -o nounset ] && opt_u_state='set -u' || opt_u_state='set +u'
     set +u
 
     local branch
@@ -17,12 +18,13 @@ function current_travis_branch() {
         ret_code=0
     fi
 
-    eval ${opt_state}
+    eval ${opt_u_state}
     return ${ret_code}
 }
 
 function exit_if_not_ci() {
-    local opt_state=$(set +o)
+    local opt_u_state
+    [ -o nounset ] && opt_u_state='set -u' || opt_u_state='set +u'
     set +u
 
     if [ -z "${TRAVIS+x}" -o "x_${TRAVIS}" != "x_true" ]; then
@@ -30,5 +32,5 @@ function exit_if_not_ci() {
         exit 1
     fi
 
-    eval ${opt_state}
+    eval ${opt_u_state}
 }
