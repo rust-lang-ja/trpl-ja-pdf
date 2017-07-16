@@ -21,6 +21,7 @@ function commit_and_push_trpl_submodule_revision() {
 
     git checkout ${current_branch}
     git add ${TRPL_DIR}
+    local ret
     set +e
     ret=$(git status | grep -q 'Changes to be committed:'; echo $?)
     set -e

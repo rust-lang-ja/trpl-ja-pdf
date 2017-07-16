@@ -10,6 +10,7 @@ function current_travis_branch() {
         branch=${TRAVIS_BRANCH}
     fi
 
+    local ret_code
     if [ "x_${branch}" = "x_" ]; then
         echo "ERROR: TRAVIS_*BRANCH variable(s) seem undefined. Could not get the branch info." 1>&2
         ret_code=1
