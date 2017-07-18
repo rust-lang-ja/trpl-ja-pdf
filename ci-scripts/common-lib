@@ -4,7 +4,7 @@ function current_travis_branch() {
     set +u
 
     local branch
-    if [ "x_{$EVENT_TYPE}" = "x_pull_request" ]; then
+    if [ "x_{$TRAVIS_EVENT_TYPE}" = "x_pull_request" ]; then
         branch=${TRAVIS_PULL_REQUEST_BRANCH}
     else
         branch=${TRAVIS_BRANCH}
