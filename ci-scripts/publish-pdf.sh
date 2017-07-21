@@ -25,14 +25,9 @@ function push_pdf_files_to_gh_pages() {
 
 exit_if_not_ci
 
-if [ -z "${TRAVIS+x}"  -o "x_${TRAVIS}" != "x_true" ]; then
-    echo "ERROR: Not pushing the PDF files to gh-pages because this script was not triggered by Travis CI." 1>&2
-    exit 1
+CURRENT_BRANCH=$(current_travis_branch)
+if [ "x_${CURRENT_BRANCH}" = "x_master" ]; then
+    push_pdf_files_to_gh_pages
 else
-    CURRENT_BRANCH=$(current_travis_branch)
-    if [ "x_${CURRENT_BRANCH}" = "x_master" ]; then
-        push_pdf_files_to_gh_pages
-    else
-        echo "Not pushing the PDF files to gh-pages because the current branch ${CURRENT_BRANCH} is not master branch."
-    fi
+    echo "Not pushing the PDF files to gh-pages because the current branch ${CURRENT_BRANCH} is not master branch."
 fi
