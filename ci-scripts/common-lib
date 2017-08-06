@@ -1,0 +1,41 @@
+function current_travis_branch() {
+    local opt_u_state
+    [ -o nounset ] && opt_u_state='set -u' || opt_u_state='set +u'
+    set +u
+
+    local branch
+    if [ "x_{$TRAVIS_EVENT_TYPE}" = "x_pull_request" ]; then
+        branch=${TRAVIS_PULL_REQUEST_BRANCH}
+    else
+        branch=${TRAVIS_BRANCH}
+    fi
+
+    local ret_code
+    if [ "x_${branch}" = "x_" ]; then
+        echo "ERROR: TRAVIS_*BRANCH variable(s) seem undefined. Could not get the branch info." 1>&2
+        ret_code=1
+    else
+        echo ${branch}
+        ret_code=0
+    fi
+
+    eval ${opt_u_state}
+    return ${ret_code}
+}
+
+function get_remote_ssh_repo_url() {
+    echo $(git remote get-url origin | sed -e 's#https://github.com/#git@github.com:#')
+}
+
+function exit_if_not_ci() {
+    local opt_u_state
+    [ -o nounset ] && opt_u_state='set -u' || opt_u_state='set +u'
+    set +u
+
+    if [ -z "${TRAVIS+x}" -o "x_${TRAVIS}" != "x_true" ]; then
+        echo "ERROR: Exiting because this script was not triggered by Travis CI." 1>&2
+        exit 1
+    fi
+
+    eval ${opt_u_state}
+}
